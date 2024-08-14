@@ -46,13 +46,11 @@ module.exports = {
         try {
             const { id } = req.params;
     
-            if (!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).json({ success: false, message: "Invalid User ID" });
-            }
+           
     
             const tasks = await Task.find({ user: id }).populate('user'); 
             if (tasks.length === 0) {
-                return res.status(404).json({ success: false, message: "No tasks found this user" });
+                return res.status(200).json({ success: false, message: "No tasks found this user" });
             }
     
             res.status(200).json({ success: true, tasks });
@@ -120,8 +118,7 @@ module.exports = {
             return res.status(400).json({ success: false, message: 'ID and status are required' });
         }
         const tasks = await Task.find({ user: id, status: status }).populate("user");
-        console.log(tasks,"status")
-
+       
         if (!tasks.length) {
             return res.status(200).json({ success: false, message: 'No tasks found' });
         }
